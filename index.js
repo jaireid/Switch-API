@@ -1,28 +1,24 @@
-// RESTful APIs: https://www.youtube.com/watch?v=-MTSQjw5DrM
-const express = require('express');
+import express, { json } from 'express';
+
 const app = express();
 const PORT = 7000;
 
-// Express does not parse JSON in the body by default. Middleware that tells Express to parse JSON
-app.use(express.json());
+// Express does not parse JSON in the body by default
+// Middleware that tells Express to parse JSON
+app.use(json());
 
-// Listens to PORT 8080 and calls a callback to let us know when the API is ready
-app.listen(PORT, 
-           () => console.log(`Live: http://localhost:${PORT}`)
-);
-
-// Add endpoint to API (app.verb(route, handler): 
+// Listens to PORT 7000 and call a callback to let us know when the API is ready
+app.listen(PORT, () => console.log(`Live: http://localhost:${PORT}`));
 
 /* 
+  Request: Incoming data 
+  Response: Outgoing data - data we want to send back to client
+
   GET Request: user is trying to get data
-    1. set up server with switch endpoint for GET request
+    1. Set up server with switch endpoint for GET request
     2. When the route is requested run callback function to handle the request
 */
 app.get('/switches', (request, response) => {
-  /* 
-    Request: incoming data 
-    Responce: outgoing data/data we want to send back to client
-  */
   // Sends a status and data payload to the server
   response.status(200).send({
     name: 'Milky Clears',
@@ -31,22 +27,23 @@ app.get('/switches', (request, response) => {
 });
 
 /* 
-  POST Request: user is trying to create new data
-    1. set up server with switch endpoint for POST request
-      a. endpoint has route params to capture dynamic values in the URL
-      b. dynamic URL paramenter represents the id of switch and allows us to handle all ids
+  POST Request: User is trying to create new data
+    1. Set up server with switch endpoint for POST request
+      a. Endpoint has route params to capture dynamic values in the URL
+      b. Dynamic URL parameter represents the id of switch and allows us to handle all ids
     2. When the route is requested run callback function to handle the request
 */
 app.post('/switches/:id', (request, response) => {
-  // Request object allows us to access information from the request message like URL parameters, headers, and body. We can use this to save a new record to the database
+  // Request object allows us to access information from the request message like URL parameters, headers, and body.
+  // We can use this to save a new record to the database
   const { id } = request.params;
-  const { brand } = request.body;
+  const { manu } = request.body;
 
-  if(!logo) {
-    response.status(418).send({ message: 'We need a brand!' });
+  if(!manu) {
+    response.status(404).send({ message: 'Missing Manufacturer!' });
   }
 
   res.send({
-    switches:  `switch with ID: ${id} and Brand: ${brand}`
+    switches: `switch with ID: ${id} and Manufacturer: ${manu}`
   });
 });
